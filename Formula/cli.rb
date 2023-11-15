@@ -4,10 +4,15 @@
 class Cli < Formula
   include Language::Python::Virtualenv
 
+  git_repo = 'https://github.com/engi-network/cli.git'
+  releases = `git ls-remote -t --symref -q #{git_repo}`.split.each_slice(2).to_a.map {|commit,tag|tag.split('/').last}
+  release_latest = releases.last
+
   desc "The CLI for the thing that it is the CLI for. Not a CLI for things that it's not for."
   homepage "https://github.com/engi-network/cli"
-  url "https://github.com/engi-network/cli.git", using: :git, revision: "2cf1b8ff25208c1ae4f7b3afa1c5c882219293eb"
-  version "0.0.1"
+  url "https://github.com/engi-network/cli.git", using: :git, revision: release_latest
+  puts("version", releases.last)
+  version releases.last
   
   license ""
 
@@ -15,7 +20,7 @@ class Cli < Formula
   depends_on "rust"
 
   head do
-    url "https://github.com/engi-network/cli.git", using: :git, branch: "cleanup-cli-deps"
+    url git_repo, using: :git, branch: "cleanup-cli-deps"
   end
 
   def install
@@ -23,6 +28,9 @@ class Cli < Formula
 
     # substrate-interface version
     ENV["GITHUB_REF"] = "refs/tags/v1.7.4"
+
+    # Temporary while developing
+    system "git rebase origin/cleanup-cli-deps"
 
     %w[common engi].each do |requirement|
       system libexec / "bin/python3 -m pip install --verbose -r #{buildpath}/requirements/#{requirement}.txt --trusted-host mark-desktop --ignore-installed --no-deps -i https://pypi.engi.network"
