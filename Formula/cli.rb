@@ -11,13 +11,13 @@ class Cli < Formula
   desc "The CLI for the thing that it is the CLI for. Not a CLI for things that it's not for."
   homepage "https://github.com/engi-network/cli"
   url "https://github.com/engi-network/cli.git", using: :git, revision: release_latest
-  puts("version", releases.last)
   version releases.last
   
   license ""
 
   depends_on "python@3.9"
   depends_on "rust"
+  depends_on "gpg"
 
   head do
     url git_repo, using: :git, branch: "cleanup-cli-deps"
@@ -33,7 +33,7 @@ class Cli < Formula
     system "git rebase origin/cleanup-cli-deps"
 
     %w[common engi].each do |requirement|
-      system libexec / "bin/python3 -m pip install --verbose -r #{buildpath}/requirements/#{requirement}.txt --trusted-host mark-desktop --ignore-installed --no-deps -i https://pypi.engi.network"
+      system libexec / "bin/python3 -m pip install --verbose -r #{buildpath}/requirements/#{requirement}.txt --trusted-host pypi.engi.network --ignore-installed --no-deps -i https://pypi.engi.network"
     end
 
     venv.pip_install_and_link(buildpath)
