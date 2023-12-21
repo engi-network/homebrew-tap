@@ -15,10 +15,6 @@ class Cli < Formula
   
   license ""
 
-  depends_on "python@3.9"
-  depends_on "rust"
-  depends_on "gpg"
-
   head do
     url git_repo, using: :git, branch: "cleanup-cli-deps"
   end
@@ -41,8 +37,8 @@ class Cli < Formula
 
   bottle do
     root_url "https://pypi.engi.network/bottles/cli"
-    rebuild 1
-    sha256 cellar: :any, arm64_monterey: "7c0de4787ca1f7c373b1f88caa4f83b8c54836806b9fd3ea611fd139eb51b1a9"
+    rebuild 3
+    sha256 cellar: :any, arm64_monterey: "7d2c061e83c3c758ea9c895883459117a0617da7af9e28c07abaa243d75e2237"
   end
 
   test do
