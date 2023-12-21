@@ -39,6 +39,12 @@ class Cli < Formula
     venv.pip_install_and_link(buildpath)
   end
 
+  bottle do
+    root_url "https://pypi.engi.network/bottles/cli"
+    rebuild 1
+    sha256 cellar: :any, arm64_monterey: "7c0de4787ca1f7c373b1f88caa4f83b8c54836806b9fd3ea611fd139eb51b1a9"
+  end
+
   test do
     system "false"
   end
